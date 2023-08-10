@@ -33,4 +33,52 @@ void main() {
 
     await Future.delayed(const Duration(seconds: 1));
   });
+
+  test('test findBufferPositionByTitle 正向', () async {
+    final novel = Novel(
+      novelId: '1',
+      novelName: 'test',
+      length: Int64(1),
+      filePath: 'test/widget_test.dart',
+      novelFileType: NovelFileType.TXT,
+    );
+    final reader = IOReader(novel);
+    final titles = [
+      'To perform an interaction with a widget in your test, use the WidgetTester',
+      "await tester.tap(find.byIcon(Icons.add));",
+      "    expect(find.text('0'), findsOneWidget);"
+    ];
+    int count = 0;
+    reader.findBufferPosition(titles).forEach((element) {
+      print(element);
+      count++;
+    });
+
+    await Future.delayed(const Duration(seconds: 3));
+    expect(count, 4);
+  });
+
+   test('test findBufferPositionByTitle 第一句为title', () async {
+    final novel = Novel(
+      novelId: '1',
+      novelName: 'test',
+      length: Int64(1),
+      filePath: 'test/widget_test.dart',
+      novelFileType: NovelFileType.TXT,
+    );
+    final reader = IOReader(novel);
+    final titles = [
+      '// This is a basic Flutter widget test.',
+      "await tester.tap(find.byIcon(Icons.add));",
+      "    expect(find.text('0'), findsOneWidget);"
+    ];
+    int count = 0;
+    reader.findBufferPosition(titles).forEach((element) {
+      print(element);
+      count++;
+    });
+
+    await Future.delayed(const Duration(seconds: 3));
+    expect(count, 3);
+  });
 }

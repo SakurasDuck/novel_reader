@@ -1,60 +1,109 @@
+import 'dart:async';
+import 'dart:isolate';
 import 'package:flutter/foundation.dart';
 import 'package:novel_reader/src/models/novel.dart';
 
 import 'package:novel_reader/src/models/novel_directory.dart';
 
-import '../../helpers/lock.dart';
 import '../file/io_reader.dart';
 import 'converter_typed_interface.dart';
 
 class TxtConverter extends ConverterTyped {
   @override
-  Future<List<NovelChapter>> convert(Novel novel) async {
+  Future<List<NovelChapter>> convertChapters(Novel novel) async {
     final novelDirectories = <NovelChapter>[];
     if (kIsWeb) {
     } else {
-      final lock = Lock();
-      lock.lock();
-
-      int chapterStartPosition = -1;
-      String chapterTitle = '序章';
-      String? volumeTitle;
-      IOReader(novel).readLines().forEach((element) {
-        if (element.lineContent.isNotEmpty != true) {
-          return;
-        }
-        final volumeRegex = RegExp(r'\s?第{1}.*卷{1}\s?');
-        final volumeMatch = volumeRegex.allMatches(element.lineContent);
-
-        final chapterRegex = RegExp(r'\s+第{1}.*章{1}\s?');
-        final chapterMatch = chapterRegex.allMatches(element.lineContent);
-
-        if (chapterMatch.isNotEmpty == true) {
-
-          novelDirectories.add(NovelChapter(
-              volume: volumeTitle,
-              title: chapterTitle,
-              startCharIndex:
-                  chapterStartPosition == -1 ? 0 : chapterStartPosition,
-              endCharIndex: element.lineStartPosition - 1));
-          chapterTitle = chapterMatch.first.group(0) ?? '';
-
-          //下一章开始位置
-          chapterStartPosition = element.lineStartPosition;
-        }
-
-        if (volumeMatch.isNotEmpty == true) {
-          volumeTitle = volumeMatch.first.group(0);
-        }
-      }).whenComplete(() {
-        novelDirectories.add(NovelChapter(
-          title: '',
-          startCharIndex: chapterStartPosition == -1 ? 0 : chapterStartPosition,
-        ));
-        lock.unlock();
-      });
-      await lock.waitDone();
+      //新开线程,直接用正则匹配全本,通过reg.groups获取章节名
+      final content = await IOReader(novel).readString();
+      return Isolate.run<List<NovelChapter>>(() => _analyzer(content));
     }
     return novelDirectories;
+  }
+
+  @override
+  Future<List<NovelChapter>> findChapterPositions(
+      Novel novel, List<NovelChapter> chapters) async {
+    final novelDirectories = <NovelChapter>[];
+    if (kIsWeb) {
+    } else {
+      //新开线程,直接用正则匹配全本,通过reg.groups获取章节名
+      final content = await IOReader(novel).readBuffer();
+      return Isolate.run<List<NovelChapter>>(
+          () => _findPositions(content, [...chapters]));
+    }
+    return novelDirectories;
+  }
+
+  /// 通过正则匹配章节
+  static List<NovelChapter> _analyzer(String novel) {
+    final novelDirectories = <NovelChapter>[];
+    final reg = RegExp(
+        r'([^\r\n]*序章?\s?$)|(?<=[\r\n])(([^\r\n]*第[一二三四五六七八九十百千万\d]*卷[^\r\n]*)?|([^\r\n]*))(第[一二三四五六七八九十百千万\d]+章).*$',
+        multiLine: true);
+    final matches = reg.allMatches(novel);
+
+    for (final match in matches) {
+      final matchStr = match.group(0) ?? '';
+      //卷号,卷名,章名可能为空
+      //章号一定不能为空
+      String? volumeNumber;
+      String? volumeName;
+      String? chapterName;
+      String chapterNumber = '';
+
+      //通过不同的正则分析出卷名,卷号,章名,章号
+      final volumeNumberReg = RegExp(r'第[一二三四五六七八九十百千万\d]*卷');
+      final valumeNumberMatch = volumeNumberReg.firstMatch(matchStr);
+      if (valumeNumberMatch != null) {
+        volumeNumber = valumeNumberMatch.group(0);
+      }
+      final volumeNameReg = RegExp(
+          r'(?<=第[一二三四五六七八九十百千万\d]*卷\s+).*(?=(\s+第[一二三四五六七八九十百千万\d]+章\s?))');
+      final volumeNameMatch = volumeNameReg.firstMatch(matchStr);
+      if (volumeNameMatch != null) {
+        volumeName = volumeNameMatch.group(0);
+      }
+      final chapterNumberReg = RegExp(r'(第[一二三四五六七八九十百千万\d]+章)|(序章?)');
+      final chapterNumberMatch = chapterNumberReg.firstMatch(matchStr);
+      if (chapterNumberMatch != null) {
+        chapterNumber = chapterNumberMatch.group(0) ?? matchStr;
+      }
+      final chapterNameReg = RegExp(r'(?<=第[一二三四五六七八九十百千万\d]+章\s+).*(?=\s?.*)');
+      final chapterNameMatch = chapterNameReg.firstMatch(matchStr);
+      if (chapterNameMatch != null) {
+        chapterName = chapterNameMatch.group(0);
+      }
+
+      final chapter = NovelChapter(
+        chapteLine: matchStr,
+        volumeTitle: volumeName,
+        volumeIndex: volumeNumber,
+        chapterTitle: chapterName,
+        chapterIndex: chapterNumber,
+        startCharIndex: -1,
+      );
+      novelDirectories.add(chapter);
+    }
+    return novelDirectories;
+  }
+
+  /// 通过行返回每段的位置(buffer.position)
+  static List<NovelChapter> _findPositions(
+      Uint8List novelBuffer, List<NovelChapter> chapters) {
+    final positons = IOReader.findBufferPositionByTitle(
+        novelBuffer, chapters.map((e) => e.chapteLine).toList());
+    assert(positons.length == chapters.length ||
+        positons.length == chapters.length + 1);
+    //直接假设章节顺序是正确的,不做排序
+    for (var i = 0; i < chapters.length; i++) {
+      final positon =
+          positons.length > chapters.length ? positons[i + 1] : positons[i];
+      chapters[i] = chapters[i].copyWith(
+        startCharIndex: positon.lineStartPosition,
+        endCharIndex: positon.lineEndPosition,
+      );
+    }
+    return chapters;
   }
 }

@@ -20,8 +20,11 @@ NovelChapter _$NovelChapterFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$NovelChapter {
-  String? get volume => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  String get chapteLine => throw _privateConstructorUsedError;
+  String? get volumeIndex => throw _privateConstructorUsedError;
+  String? get volumeTitle => throw _privateConstructorUsedError;
+  String? get chapterTitle => throw _privateConstructorUsedError;
+  String get chapterIndex => throw _privateConstructorUsedError;
   int get startCharIndex => throw _privateConstructorUsedError;
   int? get endCharIndex => throw _privateConstructorUsedError;
 
@@ -38,7 +41,13 @@ abstract class $NovelChapterCopyWith<$Res> {
       _$NovelChapterCopyWithImpl<$Res, NovelChapter>;
   @useResult
   $Res call(
-      {String? volume, String title, int startCharIndex, int? endCharIndex});
+      {String chapteLine,
+      String? volumeIndex,
+      String? volumeTitle,
+      String? chapterTitle,
+      String chapterIndex,
+      int startCharIndex,
+      int? endCharIndex});
 }
 
 /// @nodoc
@@ -54,19 +63,34 @@ class _$NovelChapterCopyWithImpl<$Res, $Val extends NovelChapter>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? volume = freezed,
-    Object? title = null,
+    Object? chapteLine = null,
+    Object? volumeIndex = freezed,
+    Object? volumeTitle = freezed,
+    Object? chapterTitle = freezed,
+    Object? chapterIndex = null,
     Object? startCharIndex = null,
     Object? endCharIndex = freezed,
   }) {
     return _then(_value.copyWith(
-      volume: freezed == volume
-          ? _value.volume
-          : volume // ignore: cast_nullable_to_non_nullable
+      chapteLine: null == chapteLine
+          ? _value.chapteLine
+          : chapteLine // ignore: cast_nullable_to_non_nullable
+              as String,
+      volumeIndex: freezed == volumeIndex
+          ? _value.volumeIndex
+          : volumeIndex // ignore: cast_nullable_to_non_nullable
               as String?,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      volumeTitle: freezed == volumeTitle
+          ? _value.volumeTitle
+          : volumeTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      chapterTitle: freezed == chapterTitle
+          ? _value.chapterTitle
+          : chapterTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      chapterIndex: null == chapterIndex
+          ? _value.chapterIndex
+          : chapterIndex // ignore: cast_nullable_to_non_nullable
               as String,
       startCharIndex: null == startCharIndex
           ? _value.startCharIndex
@@ -89,7 +113,13 @@ abstract class _$$_NovelChapterCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? volume, String title, int startCharIndex, int? endCharIndex});
+      {String chapteLine,
+      String? volumeIndex,
+      String? volumeTitle,
+      String? chapterTitle,
+      String chapterIndex,
+      int startCharIndex,
+      int? endCharIndex});
 }
 
 /// @nodoc
@@ -103,19 +133,34 @@ class __$$_NovelChapterCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? volume = freezed,
-    Object? title = null,
+    Object? chapteLine = null,
+    Object? volumeIndex = freezed,
+    Object? volumeTitle = freezed,
+    Object? chapterTitle = freezed,
+    Object? chapterIndex = null,
     Object? startCharIndex = null,
     Object? endCharIndex = freezed,
   }) {
     return _then(_$_NovelChapter(
-      volume: freezed == volume
-          ? _value.volume
-          : volume // ignore: cast_nullable_to_non_nullable
+      chapteLine: null == chapteLine
+          ? _value.chapteLine
+          : chapteLine // ignore: cast_nullable_to_non_nullable
+              as String,
+      volumeIndex: freezed == volumeIndex
+          ? _value.volumeIndex
+          : volumeIndex // ignore: cast_nullable_to_non_nullable
               as String?,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      volumeTitle: freezed == volumeTitle
+          ? _value.volumeTitle
+          : volumeTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      chapterTitle: freezed == chapterTitle
+          ? _value.chapterTitle
+          : chapterTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      chapterIndex: null == chapterIndex
+          ? _value.chapterIndex
+          : chapterIndex // ignore: cast_nullable_to_non_nullable
               as String,
       startCharIndex: null == startCharIndex
           ? _value.startCharIndex
@@ -133,8 +178,11 @@ class __$$_NovelChapterCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_NovelChapter implements _NovelChapter {
   const _$_NovelChapter(
-      {this.volume,
-      required this.title,
+      {required this.chapteLine,
+      this.volumeIndex,
+      this.volumeTitle,
+      this.chapterTitle,
+      required this.chapterIndex,
       required this.startCharIndex,
       this.endCharIndex});
 
@@ -142,9 +190,15 @@ class _$_NovelChapter implements _NovelChapter {
       _$$_NovelChapterFromJson(json);
 
   @override
-  final String? volume;
+  final String chapteLine;
   @override
-  final String title;
+  final String? volumeIndex;
+  @override
+  final String? volumeTitle;
+  @override
+  final String? chapterTitle;
+  @override
+  final String chapterIndex;
   @override
   final int startCharIndex;
   @override
@@ -152,7 +206,7 @@ class _$_NovelChapter implements _NovelChapter {
 
   @override
   String toString() {
-    return 'NovelChapter(volume: $volume, title: $title, startCharIndex: $startCharIndex, endCharIndex: $endCharIndex)';
+    return 'NovelChapter(chapteLine: $chapteLine, volumeIndex: $volumeIndex, volumeTitle: $volumeTitle, chapterTitle: $chapterTitle, chapterIndex: $chapterIndex, startCharIndex: $startCharIndex, endCharIndex: $endCharIndex)';
   }
 
   @override
@@ -160,8 +214,16 @@ class _$_NovelChapter implements _NovelChapter {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_NovelChapter &&
-            (identical(other.volume, volume) || other.volume == volume) &&
-            (identical(other.title, title) || other.title == title) &&
+            (identical(other.chapteLine, chapteLine) ||
+                other.chapteLine == chapteLine) &&
+            (identical(other.volumeIndex, volumeIndex) ||
+                other.volumeIndex == volumeIndex) &&
+            (identical(other.volumeTitle, volumeTitle) ||
+                other.volumeTitle == volumeTitle) &&
+            (identical(other.chapterTitle, chapterTitle) ||
+                other.chapterTitle == chapterTitle) &&
+            (identical(other.chapterIndex, chapterIndex) ||
+                other.chapterIndex == chapterIndex) &&
             (identical(other.startCharIndex, startCharIndex) ||
                 other.startCharIndex == startCharIndex) &&
             (identical(other.endCharIndex, endCharIndex) ||
@@ -170,8 +232,8 @@ class _$_NovelChapter implements _NovelChapter {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, volume, title, startCharIndex, endCharIndex);
+  int get hashCode => Object.hash(runtimeType, chapteLine, volumeIndex,
+      volumeTitle, chapterTitle, chapterIndex, startCharIndex, endCharIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -189,8 +251,11 @@ class _$_NovelChapter implements _NovelChapter {
 
 abstract class _NovelChapter implements NovelChapter {
   const factory _NovelChapter(
-      {final String? volume,
-      required final String title,
+      {required final String chapteLine,
+      final String? volumeIndex,
+      final String? volumeTitle,
+      final String? chapterTitle,
+      required final String chapterIndex,
       required final int startCharIndex,
       final int? endCharIndex}) = _$_NovelChapter;
 
@@ -198,9 +263,15 @@ abstract class _NovelChapter implements NovelChapter {
       _$_NovelChapter.fromJson;
 
   @override
-  String? get volume;
+  String get chapteLine;
   @override
-  String get title;
+  String? get volumeIndex;
+  @override
+  String? get volumeTitle;
+  @override
+  String? get chapterTitle;
+  @override
+  String get chapterIndex;
   @override
   int get startCharIndex;
   @override

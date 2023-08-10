@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_reader/src/providers/picker_file.dart';
 
 import 'src/helpers/default_error.dart';
-import 'src/routes/chapter_analyzer.dart';
 import 'src/routes/routes.dart';
 import 'src/services/log/log.dart';
 
@@ -35,20 +35,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _appRouter = AppRouter();
     return MaterialApp.router(
-      routerConfig: routes,
+      routerConfig: _appRouter.config(),
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      
     );
   }
 }
 
+@RoutePage()
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key,  this.title='novel'});
 
   final String title;
 
@@ -86,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           await ref.read(pickNovelFileProvider.future);
                       if (result != null) {
                         // ignore: use_build_context_synchronously
-                        ChapterAcalyzerWithExtra($extra: result).go(context);
+                       context.pushRoute(ChaptersAcalyzer(novel: result));
                       }
                     },
                     child: Text(

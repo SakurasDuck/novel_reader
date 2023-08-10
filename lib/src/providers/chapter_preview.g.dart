@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'gen_novel_directory.dart';
+part of 'chapter_preview.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$analyzeChaptersHash() => r'78b45e45f2bfc4ce1e099c98d40be989d6b34ae4';
+String _$readChapterContentHash() =>
+    r'06c6f9094c9b5196aef30d35d8b16065598b49af';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,32 +30,35 @@ class _SystemHash {
   }
 }
 
-typedef AnalyzeChaptersRef = AutoDisposeStreamProviderRef<List<NovelChapter>>;
+typedef ReadChapterContentRef = AutoDisposeFutureProviderRef<String>;
 
-/// See also [analyzeChapters].
-@ProviderFor(analyzeChapters)
-const analyzeChaptersProvider = AnalyzeChaptersFamily();
+/// See also [readChapterContent].
+@ProviderFor(readChapterContent)
+const readChapterContentProvider = ReadChapterContentFamily();
 
-/// See also [analyzeChapters].
-class AnalyzeChaptersFamily extends Family<AsyncValue<List<NovelChapter>>> {
-  /// See also [analyzeChapters].
-  const AnalyzeChaptersFamily();
+/// See also [readChapterContent].
+class ReadChapterContentFamily extends Family<AsyncValue<String>> {
+  /// See also [readChapterContent].
+  const ReadChapterContentFamily();
 
-  /// See also [analyzeChapters].
-  AnalyzeChaptersProvider call({
-    required Novel novel,
-  }) {
-    return AnalyzeChaptersProvider(
-      novel: novel,
+  /// See also [readChapterContent].
+  ReadChapterContentProvider call(
+    Novel novel,
+    NovelChapter chapter,
+  ) {
+    return ReadChapterContentProvider(
+      novel,
+      chapter,
     );
   }
 
   @override
-  AnalyzeChaptersProvider getProviderOverride(
-    covariant AnalyzeChaptersProvider provider,
+  ReadChapterContentProvider getProviderOverride(
+    covariant ReadChapterContentProvider provider,
   ) {
     return call(
-      novel: provider.novel,
+      provider.novel,
+      provider.chapter,
     );
   }
 
@@ -70,42 +74,47 @@ class AnalyzeChaptersFamily extends Family<AsyncValue<List<NovelChapter>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'analyzeChaptersProvider';
+  String? get name => r'readChapterContentProvider';
 }
 
-/// See also [analyzeChapters].
-class AnalyzeChaptersProvider
-    extends AutoDisposeStreamProvider<List<NovelChapter>> {
-  /// See also [analyzeChapters].
-  AnalyzeChaptersProvider({
-    required this.novel,
-  }) : super.internal(
-          (ref) => analyzeChapters(
+/// See also [readChapterContent].
+class ReadChapterContentProvider extends AutoDisposeFutureProvider<String> {
+  /// See also [readChapterContent].
+  ReadChapterContentProvider(
+    this.novel,
+    this.chapter,
+  ) : super.internal(
+          (ref) => readChapterContent(
             ref,
-            novel: novel,
+            novel,
+            chapter,
           ),
-          from: analyzeChaptersProvider,
-          name: r'analyzeChaptersProvider',
+          from: readChapterContentProvider,
+          name: r'readChapterContentProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$analyzeChaptersHash,
-          dependencies: AnalyzeChaptersFamily._dependencies,
+                  : _$readChapterContentHash,
+          dependencies: ReadChapterContentFamily._dependencies,
           allTransitiveDependencies:
-              AnalyzeChaptersFamily._allTransitiveDependencies,
+              ReadChapterContentFamily._allTransitiveDependencies,
         );
 
   final Novel novel;
+  final NovelChapter chapter;
 
   @override
   bool operator ==(Object other) {
-    return other is AnalyzeChaptersProvider && other.novel == novel;
+    return other is ReadChapterContentProvider &&
+        other.novel == novel &&
+        other.chapter == chapter;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, novel.hashCode);
+    hash = _SystemHash.combine(hash, chapter.hashCode);
 
     return _SystemHash.finish(hash);
   }

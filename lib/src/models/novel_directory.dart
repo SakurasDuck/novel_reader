@@ -7,8 +7,11 @@ part 'novel_directory.g.dart';
 @freezed
 class NovelChapter with _$NovelChapter {
   const factory NovelChapter({
-    String? volume,
-    required String title,
+    required String chapteLine,
+    String? volumeIndex,
+    String? volumeTitle,
+    String? chapterTitle,
+    required String chapterIndex,
     required int startCharIndex,
     int? endCharIndex,
   }) = _NovelChapter;
