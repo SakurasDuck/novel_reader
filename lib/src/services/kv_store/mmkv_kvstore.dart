@@ -12,7 +12,7 @@ class MMKVKVStore extends IKvStore {
 
   MMKVKVStore(this.instanceName);
 
-  Lock _lock = Lock();
+  final Lock _lock = Lock();
 
   MMKV? _instance;
 

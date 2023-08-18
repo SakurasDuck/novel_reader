@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:novel_reader/src/helpers/lock.dart';
 import 'package:novel_reader/src/services/kv_store/kvstore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

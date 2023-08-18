@@ -1,8 +1,6 @@
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../helpers/json_type_converter.dart';
 import 'novel_directory.dart';
 import 'novel_file_type.dart';
 

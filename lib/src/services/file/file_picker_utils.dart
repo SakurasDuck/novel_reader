@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:novel_reader/src/models/novel.dart';
 import 'package:novel_reader/src/services/file/temp_file_utils.dart';

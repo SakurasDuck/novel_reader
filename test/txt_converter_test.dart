@@ -1,4 +1,3 @@
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_reader/src/models/novel.dart';
 import 'package:novel_reader/src/models/novel_file_type.dart';
