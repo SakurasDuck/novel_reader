@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    BookShelf.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BookShelfView(),
+      );
+    },
     ChapterPreview.name: (routeData) {
       final args = routeData.argsAs<ChapterPreviewArgs>();
       return AutoRoutePage<dynamic>(
@@ -28,7 +34,7 @@ abstract class _$AppRouter extends RootStackRouter {
     },
     ChaptersAcalyzer.name: (routeData) {
       final args = routeData.argsAs<ChaptersAcalyzerArgs>();
-      return AutoRoutePage<dynamic>(
+      return AutoRoutePage<bool>(
         routeData: routeData,
         child: ChaptersAcalyzerView(
           novel: args.novel,
@@ -36,18 +42,32 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    MyHomeRoute.name: (routeData) {
-      final args = routeData.argsAs<MyHomeRouteArgs>(
-          orElse: () => const MyHomeRouteArgs());
+    NovelReader.name: (routeData) {
+      final args = routeData.argsAs<NovelReaderArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: MyHomePage(
+        child: ReaderView(
+          novel: args.novel,
+          chapterIndex: args.chapterIndex,
           key: args.key,
-          title: args.title,
         ),
       );
     },
   };
+}
+
+/// generated route for
+/// [BookShelfView]
+class BookShelf extends PageRouteInfo<void> {
+  const BookShelf({List<PageRouteInfo>? children})
+      : super(
+          BookShelf.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BookShelf';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -132,38 +152,43 @@ class ChaptersAcalyzerArgs {
 }
 
 /// generated route for
-/// [MyHomePage]
-class MyHomeRoute extends PageRouteInfo<MyHomeRouteArgs> {
-  MyHomeRoute({
+/// [ReaderView]
+class NovelReader extends PageRouteInfo<NovelReaderArgs> {
+  NovelReader({
+    required Novel novel,
+    required int chapterIndex,
     Key? key,
-    String title = 'novel',
     List<PageRouteInfo>? children,
   }) : super(
-          MyHomeRoute.name,
-          args: MyHomeRouteArgs(
+          NovelReader.name,
+          args: NovelReaderArgs(
+            novel: novel,
+            chapterIndex: chapterIndex,
             key: key,
-            title: title,
           ),
           initialChildren: children,
         );
 
-  static const String name = 'MyHomeRoute';
+  static const String name = 'NovelReader';
 
-  static const PageInfo<MyHomeRouteArgs> page = PageInfo<MyHomeRouteArgs>(name);
+  static const PageInfo<NovelReaderArgs> page = PageInfo<NovelReaderArgs>(name);
 }
 
-class MyHomeRouteArgs {
-  const MyHomeRouteArgs({
+class NovelReaderArgs {
+  const NovelReaderArgs({
+    required this.novel,
+    required this.chapterIndex,
     this.key,
-    this.title = 'novel',
   });
+
+  final Novel novel;
+
+  final int chapterIndex;
 
   final Key? key;
 
-  final String title;
-
   @override
   String toString() {
-    return 'MyHomeRouteArgs{key: $key, title: $title}';
+    return 'NovelReaderArgs{novel: $novel, chapterIndex: $chapterIndex, key: $key}';
   }
 }

@@ -18,17 +18,33 @@ class ChapterPreviewView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final content = ref.watch(readChapterContentProvider(novel, chapter));
-    return Material(
-        child: content.when(
-      data: (data) => SingleChildScrollView(
-        child: Text(data),
-      ),
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (err, stack) => Center(
-        child: Text(err.toString()),
-      ),
-    ));
+    return Scaffold(
+      body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context,
+                  bool innerBoxIsScrolled) =>
+              <Widget>[
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: SliverAppBar(
+                    title: Text([
+                      chapter.chapterIndex,
+                      chapter.chapterTitle,
+                    ].where((element) => element != null).join(' ')),
+                  ),
+                ),
+              ],
+          body: SingleChildScrollView(
+            child: content.when(
+            data: (data) => Text(data),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            error: (err, stack) => Center(
+              child: Text(err.toString()),
+            ),
+          ),
+          )),
+    );
   }
 }

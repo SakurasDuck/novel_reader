@@ -53,7 +53,7 @@ class FilePickerUitls {
           return Novel(
               novelId: UuidService.uuid,
               novelName: file.name,
-              length: Int64(file.size),
+              length: file.size,
               novelFileType: NovelFileTypeExt.fromString(file.extension ?? ''),
               bytes: file.bytes);
         } else {
@@ -63,7 +63,7 @@ class FilePickerUitls {
               novelId: UuidService.uuid,
               novelName: file.name,
               filePath: file.path!,
-              length: Int64(file.size),
+              length: file.size,
               novelFileType: NovelFileTypeExt.fromString(file.extension ?? ''));
         }
       }

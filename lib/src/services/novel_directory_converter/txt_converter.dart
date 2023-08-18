@@ -39,7 +39,7 @@ class TxtConverter extends ConverterTyped {
   static List<NovelChapter> _analyzer(String novel) {
     final novelDirectories = <NovelChapter>[];
     final reg = RegExp(
-        r'([^\r\n]*序章?\s?$)|(?<=[\r\n])(([^\r\n]*第[一二三四五六七八九十百千万\d]*卷[^\r\n]*)?|([^\r\n]*))(第[一二三四五六七八九十百千万\d]+章).*$',
+        r'([^\r\n]*序章?\s?$)|(?<=[\r\n])(([^\r\n]*第[一二三四五六七八九十百千万\d]*卷[^\r\n]*)?|([^\r\n]*))(第[一二三四五六七八九十百千万\d]+章)[^\r\n]*$',
         multiLine: true);
     final matches = reg.allMatches(novel);
 
@@ -93,16 +93,26 @@ class TxtConverter extends ConverterTyped {
       Uint8List novelBuffer, List<NovelChapter> chapters) {
     final positons = IOReader.findBufferPositionByTitle(
         novelBuffer, chapters.map((e) => e.chapteLine).toList());
-    assert(positons.length == chapters.length ||
-        positons.length == chapters.length + 1);
+    assert(chapters.length <= positons.length);
+    if (positons.isNotEmpty && positons[0].lineContent == '') {
+      chapters.insert(
+          0,
+          const NovelChapter(
+            chapteLine: '',
+            chapterIndex: '序',
+            startCharIndex: 0,
+          ));
+    }
+
     //直接假设章节顺序是正确的,不做排序
     for (var i = 0; i < chapters.length; i++) {
-      final positon =
-          positons.length > chapters.length ? positons[i + 1] : positons[i];
-      chapters[i] = chapters[i].copyWith(
-        startCharIndex: positon.lineStartPosition,
-        endCharIndex: positon.lineEndPosition,
-      );
+      if (positons.length > i) {
+        final positon = positons[i];
+        chapters[i] = chapters[i].copyWith(
+          startCharIndex: positon.lineStartPosition,
+          endCharIndex: positon.lineEndPosition,
+        );
+      }
     }
     return chapters;
   }

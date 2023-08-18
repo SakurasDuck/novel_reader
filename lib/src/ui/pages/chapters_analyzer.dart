@@ -1,14 +1,16 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_reader/src/providers/gen_novel_directory.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:novel_reader/src/providers/novel_shelf_cache.dart';
 import 'package:novel_reader/src/routes/routes.dart';
 
 import '../../models/novel.dart';
 import '../../models/novel_directory.dart';
 import '../../services/log/log.dart';
 
-@RoutePage(name: 'ChaptersAcalyzer')
+@RoutePage<bool>(name: 'ChaptersAcalyzer')
 class ChaptersAcalyzerView extends ConsumerWidget {
   const ChaptersAcalyzerView({required this.novel, super.key});
 
@@ -39,7 +41,19 @@ class ChaptersAcalyzerView extends ConsumerWidget {
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              //添加到书库
+                            final copied=  novel.copyWith(chapters: result);
+                              ref
+                                  .read(novel2CacheProvider(copied).future)
+                                  .then((value) {
+                                BotToast.showText(text: '添加成功');
+                              }).catchError((error, stack) {
+                                log.logError(error, stack);
+                                BotToast.showText(text: '添加失败');
+                              });
+                              context.popRoute();
+                            },
                             child: const Text(
                               '添加到书库',
                               style: TextStyle(
@@ -75,7 +89,8 @@ class ChaptersAcalyzerView extends ConsumerWidget {
                           chapter.chapterIndex,
                           chapter.chapterTitle,
                           chapter.startCharIndex,
-                          chapter.endCharIndex
+                          chapter.endCharIndex,
+                          (chapter.endCharIndex ?? 0) - chapter.startCharIndex
                         ].where((element) => element != null).join(' ')),
                       ),
                     );

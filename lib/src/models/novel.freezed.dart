@@ -23,10 +23,8 @@ mixin _$Novel {
   String get novelId => throw _privateConstructorUsedError;
   String get novelName => throw _privateConstructorUsedError;
   String? get filePath => throw _privateConstructorUsedError;
-  @Int64Converter()
-  Int64 get length => throw _privateConstructorUsedError;
-  List<NovelChapter>? get novelDirectories =>
-      throw _privateConstructorUsedError;
+  int get length => throw _privateConstructorUsedError;
+  List<NovelChapter>? get chapters => throw _privateConstructorUsedError;
   NovelFileType get novelFileType => throw _privateConstructorUsedError;
   List<int>? get bytes => throw _privateConstructorUsedError;
 
@@ -44,8 +42,8 @@ abstract class $NovelCopyWith<$Res> {
       {String novelId,
       String novelName,
       String? filePath,
-      @Int64Converter() Int64 length,
-      List<NovelChapter>? novelDirectories,
+      int length,
+      List<NovelChapter>? chapters,
       NovelFileType novelFileType,
       List<int>? bytes});
 }
@@ -67,7 +65,7 @@ class _$NovelCopyWithImpl<$Res, $Val extends Novel>
     Object? novelName = null,
     Object? filePath = freezed,
     Object? length = null,
-    Object? novelDirectories = freezed,
+    Object? chapters = freezed,
     Object? novelFileType = null,
     Object? bytes = freezed,
   }) {
@@ -87,10 +85,10 @@ class _$NovelCopyWithImpl<$Res, $Val extends Novel>
       length: null == length
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as Int64,
-      novelDirectories: freezed == novelDirectories
-          ? _value.novelDirectories
-          : novelDirectories // ignore: cast_nullable_to_non_nullable
+              as int,
+      chapters: freezed == chapters
+          ? _value.chapters
+          : chapters // ignore: cast_nullable_to_non_nullable
               as List<NovelChapter>?,
       novelFileType: null == novelFileType
           ? _value.novelFileType
@@ -114,8 +112,8 @@ abstract class _$$_NovelCopyWith<$Res> implements $NovelCopyWith<$Res> {
       {String novelId,
       String novelName,
       String? filePath,
-      @Int64Converter() Int64 length,
-      List<NovelChapter>? novelDirectories,
+      int length,
+      List<NovelChapter>? chapters,
       NovelFileType novelFileType,
       List<int>? bytes});
 }
@@ -133,7 +131,7 @@ class __$$_NovelCopyWithImpl<$Res> extends _$NovelCopyWithImpl<$Res, _$_Novel>
     Object? novelName = null,
     Object? filePath = freezed,
     Object? length = null,
-    Object? novelDirectories = freezed,
+    Object? chapters = freezed,
     Object? novelFileType = null,
     Object? bytes = freezed,
   }) {
@@ -153,10 +151,10 @@ class __$$_NovelCopyWithImpl<$Res> extends _$NovelCopyWithImpl<$Res, _$_Novel>
       length: null == length
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as Int64,
-      novelDirectories: freezed == novelDirectories
-          ? _value._novelDirectories
-          : novelDirectories // ignore: cast_nullable_to_non_nullable
+              as int,
+      chapters: freezed == chapters
+          ? _value._chapters
+          : chapters // ignore: cast_nullable_to_non_nullable
               as List<NovelChapter>?,
       novelFileType: null == novelFileType
           ? _value.novelFileType
@@ -177,11 +175,11 @@ class _$_Novel with DiagnosticableTreeMixin implements _Novel {
       {required this.novelId,
       required this.novelName,
       this.filePath,
-      @Int64Converter() required this.length,
-      final List<NovelChapter>? novelDirectories,
+      required this.length,
+      final List<NovelChapter>? chapters,
       required this.novelFileType,
       final List<int>? bytes})
-      : _novelDirectories = novelDirectories,
+      : _chapters = chapters,
         _bytes = bytes;
 
   factory _$_Novel.fromJson(Map<String, dynamic> json) =>
@@ -194,15 +192,13 @@ class _$_Novel with DiagnosticableTreeMixin implements _Novel {
   @override
   final String? filePath;
   @override
-  @Int64Converter()
-  final Int64 length;
-  final List<NovelChapter>? _novelDirectories;
+  final int length;
+  final List<NovelChapter>? _chapters;
   @override
-  List<NovelChapter>? get novelDirectories {
-    final value = _novelDirectories;
+  List<NovelChapter>? get chapters {
+    final value = _chapters;
     if (value == null) return null;
-    if (_novelDirectories is EqualUnmodifiableListView)
-      return _novelDirectories;
+    if (_chapters is EqualUnmodifiableListView) return _chapters;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -221,7 +217,7 @@ class _$_Novel with DiagnosticableTreeMixin implements _Novel {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Novel(novelId: $novelId, novelName: $novelName, filePath: $filePath, length: $length, novelDirectories: $novelDirectories, novelFileType: $novelFileType, bytes: $bytes)';
+    return 'Novel(novelId: $novelId, novelName: $novelName, filePath: $filePath, length: $length, chapters: $chapters, novelFileType: $novelFileType, bytes: $bytes)';
   }
 
   @override
@@ -233,7 +229,7 @@ class _$_Novel with DiagnosticableTreeMixin implements _Novel {
       ..add(DiagnosticsProperty('novelName', novelName))
       ..add(DiagnosticsProperty('filePath', filePath))
       ..add(DiagnosticsProperty('length', length))
-      ..add(DiagnosticsProperty('novelDirectories', novelDirectories))
+      ..add(DiagnosticsProperty('chapters', chapters))
       ..add(DiagnosticsProperty('novelFileType', novelFileType))
       ..add(DiagnosticsProperty('bytes', bytes));
   }
@@ -249,8 +245,7 @@ class _$_Novel with DiagnosticableTreeMixin implements _Novel {
             (identical(other.filePath, filePath) ||
                 other.filePath == filePath) &&
             (identical(other.length, length) || other.length == length) &&
-            const DeepCollectionEquality()
-                .equals(other._novelDirectories, _novelDirectories) &&
+            const DeepCollectionEquality().equals(other._chapters, _chapters) &&
             (identical(other.novelFileType, novelFileType) ||
                 other.novelFileType == novelFileType) &&
             const DeepCollectionEquality().equals(other._bytes, _bytes));
@@ -264,7 +259,7 @@ class _$_Novel with DiagnosticableTreeMixin implements _Novel {
       novelName,
       filePath,
       length,
-      const DeepCollectionEquality().hash(_novelDirectories),
+      const DeepCollectionEquality().hash(_chapters),
       novelFileType,
       const DeepCollectionEquality().hash(_bytes));
 
@@ -287,8 +282,8 @@ abstract class _Novel implements Novel {
       {required final String novelId,
       required final String novelName,
       final String? filePath,
-      @Int64Converter() required final Int64 length,
-      final List<NovelChapter>? novelDirectories,
+      required final int length,
+      final List<NovelChapter>? chapters,
       required final NovelFileType novelFileType,
       final List<int>? bytes}) = _$_Novel;
 
@@ -301,10 +296,9 @@ abstract class _Novel implements Novel {
   @override
   String? get filePath;
   @override
-  @Int64Converter()
-  Int64 get length;
+  int get length;
   @override
-  List<NovelChapter>? get novelDirectories;
+  List<NovelChapter>? get chapters;
   @override
   NovelFileType get novelFileType;
   @override

@@ -109,6 +109,17 @@ class IOReader {
     final file = File(_novel.filePath!);
     return file.openRead(start, end).transform(utf8.decoder);
   }
+
+  Future<String> readAsync({required int start, required int? end}) async {
+    final file = File(_novel.filePath!);
+    final result = <String>[];
+    await for (final content
+        in file.openRead(start, end).transform(utf8.decoder)) {
+      result.add(content);
+    }
+    return result.fold(
+        '', (previousValue, element) => '$previousValue$element');
+  }
 }
 
 /// 比较回调

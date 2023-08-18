@@ -16,8 +16,8 @@ class Novel with _$Novel {
     required String novelId,
     required String novelName,
     String? filePath,
-    @Int64Converter() required Int64 length,
-    List<NovelChapter>? novelDirectories,
+    required int length,
+    List<NovelChapter>? chapters,
     required NovelFileType novelFileType,
     List<int>? bytes,
   }) = _Novel;

@@ -5,7 +5,9 @@ import 'interfaces/i_log.dart';
 import 'interfaces/i_log_provider.dart';
 import 'interfaces/log_level.dart';
 
-void defaultLogProvier(){
+export 'interfaces/log_level.dart';
+
+void defaultLogProvier() {
   GetIt.instance.registerSingleton<List<ILogProvider>>([ConsoleLogProvider()]);
 }
 

@@ -9,6 +9,6 @@ export 'i_kvstore.dart';
 IKvStore? _kvStore;
 
 IKvStore get kvStore {
-  _kvStore ??= createKvstore('bot_chat');
+  _kvStore ??= createKvstore('novel_cache');
   return _kvStore!;
 }

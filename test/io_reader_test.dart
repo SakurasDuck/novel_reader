@@ -6,14 +6,14 @@ import 'package:novel_reader/src/services/file/io_reader.dart';
 
 void main() {
   test('io test', () async {
-    final novel = Novel(
+    const novel = Novel(
       novelId: '1',
       novelName: 'test',
-      length: Int64(1),
+      length: 1,
       filePath: 'test/widget_test.dart',
       novelFileType: NovelFileType.TXT,
     );
-    final reader = IOReader(novel);
+    const reader = IOReader(novel);
 
     final List<LineBuffer> lines = [];
     reader.readLines().listen((event) {
@@ -35,14 +35,14 @@ void main() {
   });
 
   test('test findBufferPositionByTitle 正向', () async {
-    final novel = Novel(
+    const novel = Novel(
       novelId: '1',
       novelName: 'test',
-      length: Int64(1),
+      length: 1,
       filePath: 'test/widget_test.dart',
       novelFileType: NovelFileType.TXT,
     );
-    final reader = IOReader(novel);
+    const reader = IOReader(novel);
     final titles = [
       'To perform an interaction with a widget in your test, use the WidgetTester',
       "await tester.tap(find.byIcon(Icons.add));",
@@ -59,14 +59,14 @@ void main() {
   });
 
    test('test findBufferPositionByTitle 第一句为title', () async {
-    final novel = Novel(
+    const novel =  Novel(
       novelId: '1',
       novelName: 'test',
-      length: Int64(1),
+      length: 1,
       filePath: 'test/widget_test.dart',
       novelFileType: NovelFileType.TXT,
     );
-    final reader = IOReader(novel);
+    const reader = IOReader(novel);
     final titles = [
       '// This is a basic Flutter widget test.',
       "await tester.tap(find.byIcon(Icons.add));",
