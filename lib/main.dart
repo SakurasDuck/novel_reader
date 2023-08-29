@@ -4,6 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lifecycle/lifecycle.dart';
 
 import 'src/helpers/default_error.dart';
 import 'src/routes/routes.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       builder: BotToastInit(),
       routerConfig: _appRouter.config(
-          navigatorObservers: () => [BotToastNavigatorObserver()]),
+          navigatorObservers: () => [BotToastNavigatorObserver(),defaultLifecycleObserver]),
       title: 'novel',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

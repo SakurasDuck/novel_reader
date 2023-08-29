@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:keframe/keframe.dart';
+import 'package:lifecycle/lifecycle.dart';
 import 'package:novel_reader/src/providers/chapter_reader.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
@@ -46,10 +48,8 @@ class ReaderView extends ConsumerWidget {
                 if (readerState.controller.controller?.hasClients != true) {
                   return;
                 }
-
                 final previous = map[previousCtx];
                 final next = map[nextCtx];
-
                 //获取当前滚动器的位置
                 final currentOffset = readerState.controller.controller!.offset;
                 if (currentOffset > 0) {
@@ -81,34 +81,50 @@ class ReaderView extends ConsumerWidget {
                   }
                 }
               },
-              child: CustomScrollView(
-                controller: readerState.controller.controller,
-                physics: const AlwaysScrollableScrollPhysics(),
-                cacheExtent: constraints.maxHeight,
-                center: centerKey,
-                slivers: [
-                  SliverList.builder(
-                    itemBuilder: (context, index) {
-                      previousCtx = context;
-                      return Text(readerState.previous[index]);
-                    },
-                    itemCount: readerState.previous.length,
-                  ),
-                  SliverPadding(
-                    key: centerKey,
-                    padding: EdgeInsets.zero,
-                  ),
-                  SliverList.builder(
-                    itemBuilder: (context, index) {
-                      nextCtx = context;
-                      return Text(readerState.nexts[index]);
-                    },
-                    itemCount: readerState.nexts.length,
-                  ),
-                ],
+              child: SizeCacheWidget(
+                child: CustomScrollView(
+                  controller: readerState.controller.controller,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  cacheExtent: constraints.maxHeight,
+                  center: centerKey,
+                  slivers: [
+                    SliverList.builder(
+                      itemBuilder: (context, index) {
+                        previousCtx = context;
+                        return FrameSeparateWidget(
+                            index: index,
+                            child: ScrollViewItemLifecycleWrapper(
+                                onLifecycleEvent: (event) =>
+                                    onLifecycleEvent(event, index),
+                                child: Text(readerState.previous[index])));
+                      },
+                      itemCount: readerState.previous.length,
+                    ),
+                    SliverPadding(
+                      key: centerKey,
+                      padding: EdgeInsets.zero,
+                    ),
+                    SliverList.builder(
+                      itemBuilder: (context, index) {
+                        nextCtx = context;
+                        return FrameSeparateWidget(
+                            index: index,
+                            child: ScrollViewItemLifecycleWrapper(
+                                onLifecycleEvent: (event) =>
+                                    onLifecycleEvent(event, index),
+                                child: Text(readerState.nexts[index])));
+                      },
+                      itemCount: readerState.nexts.length,
+                    ),
+                  ],
+                ),
               ));
         },
       ),
     );
+  }
+
+  void onLifecycleEvent(LifecycleEvent event, int index) {
+    log.logDebug('index:$index -onLifecycleEvent $event');
   }
 }
