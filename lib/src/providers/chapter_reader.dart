@@ -157,6 +157,7 @@ class ReaderCurrentIndex extends _$ReaderCurrentIndex {
   
   void changeIndex(int index){
     state=index;
+    //记录当前阅读章节
   }
 }
 
@@ -176,3 +177,5 @@ SliverObserverController getSliverObserverController(
     GetSliverObserverControllerRef ref) {
   return SliverObserverController(controller: ScrollController());
 }
+
+
