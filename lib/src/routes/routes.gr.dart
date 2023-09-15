@@ -48,7 +48,7 @@ abstract class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: ReaderView(
           novel: args.novel,
-          chapterIndex: args.chapterIndex,
+          schedule: args.schedule,
           key: args.key,
         ),
       );
@@ -156,14 +156,14 @@ class ChaptersAcalyzerArgs {
 class NovelReader extends PageRouteInfo<NovelReaderArgs> {
   NovelReader({
     required Novel novel,
-    required int chapterIndex,
+    required ChapterScheduleCache schedule,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           NovelReader.name,
           args: NovelReaderArgs(
             novel: novel,
-            chapterIndex: chapterIndex,
+            schedule: schedule,
             key: key,
           ),
           initialChildren: children,
@@ -177,18 +177,18 @@ class NovelReader extends PageRouteInfo<NovelReaderArgs> {
 class NovelReaderArgs {
   const NovelReaderArgs({
     required this.novel,
-    required this.chapterIndex,
+    required this.schedule,
     this.key,
   });
 
   final Novel novel;
 
-  final int chapterIndex;
+  final ChapterScheduleCache schedule;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'NovelReaderArgs{novel: $novel, chapterIndex: $chapterIndex, key: $key}';
+    return 'NovelReaderArgs{novel: $novel, schedule: $schedule, key: $key}';
   }
 }

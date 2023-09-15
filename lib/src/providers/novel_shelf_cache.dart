@@ -1,13 +1,17 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:novel_reader/src/services/kv_store/kvstore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/novel.dart';
 import '../models/novel_shelf_cache.dart';
+import '../models/stream_done.dart';
 import '../services/log/log.dart';
+import 'chapter_reader.dart';
 
 part 'novel_shelf_cache.g.dart';
 
@@ -33,27 +37,27 @@ Future<void> novel2Cache(Novel2CacheRef ref, Novel novel) async {
   }
 }
 
+Stream<Novel> _readNovel(List<String> novelCacheKey) {
+  final futures = novelCacheKey.map((e) async {
+    final novelStr = await kvStore.getString(e);
+    final novel = Novel.fromJson(jsonDecode(novelStr!));
+    return novel;
+  });
+
+  return Stream.fromFutures(futures);
+}
+
 @riverpod
-Stream<List<Novel>> getNovelsFromCache(GetNovelsFromCacheRef ref) async* {
+Stream<Novel> getNovelsFromCache(GetNovelsFromCacheRef ref) async* {
   final result = await kvStore.getString(novel_shelf_key);
-  final novels = <Novel>[];
   if (result?.isNotEmpty != true) {
-    yield novels;
-  }
-  Stream<Novel> readNovel(List<String> novelCacheKey) {
-    final futures = novelCacheKey.map((e) async {
-      final novelStr = await kvStore.getString(e);
-      final novel = Novel.fromJson(jsonDecode(novelStr!));
-      return novel;
-    });
-
-    return Stream.fromFutures(futures);
+    yield* const Stream.empty();
+    return;
   }
 
-  await for (final item in readNovel(
+  await for (final item in _readNovel(
       NovelShelfCache.fromJson(jsonDecode(result!)).novelCacheKey)) {
-    novels.add(item);
-    yield novels;
+    yield item;
   }
 }
 
@@ -65,10 +69,49 @@ class NovelShelf extends _$NovelShelf {
   List<Novel> build() => [];
 
   Future<void> loadRefresh() async {
-    state = await ref.read(getNovelsFromCacheProvider.future);
+    //这个异步为使清空state 导致重绘在initState,build中
+    await Future.delayed(const Duration(milliseconds: 100));
+    state = [];
+    final listener =
+        ref.read(getNovelsFromCacheProvider.stream).listen((event) {
+      state = [...state, event];
+    });
+    await listener.asFuture();
   }
 
   @override
   bool updateShouldNotify(List<Novel> previous, List<Novel> next) =>
       previous != next || previous.length != next.length;
+}
+
+///查询小说的阅读进度
+@riverpod
+Future<List<ChapterScheduleCache?>> getChapterScheduleCaches(
+    GetChapterScheduleCachesRef ref, List<Novel> novels) async {
+  return Future.wait(novels.map(
+      (e) => ref.read(getCurrentChapterScheduleProvider(e.novelId).future)));
+}
+
+@riverpod
+class Schedules extends _$Schedules {
+  @override
+  List<ChapterScheduleCache> build() => [];
+
+  void addAll(List<ChapterScheduleCache?> schedules) {
+    state = [
+      ...schedules
+          .where((element) => element != null)
+          .cast<ChapterScheduleCache>()
+    ];
+  }
+
+  void relaceItem(ChapterScheduleCache schedule) {
+    final index =
+        state.indexWhere((element) => element.novelId == schedule.novelId);
+    if (index != -1) {
+      state[index] = schedule;
+    }
+
+    state = [...state];
+  }
 }

@@ -111,12 +111,11 @@ class Novel2CacheProvider extends AutoDisposeFutureProvider<void> {
 }
 
 String _$getNovelsFromCacheHash() =>
-    r'acfa0ad584adc148793ca5fe8e27c816eea86e4c';
+    r'c065ed10a80bc1aa90574fc97138dc8fc6fef2fc';
 
 /// See also [getNovelsFromCache].
 @ProviderFor(getNovelsFromCache)
-final getNovelsFromCacheProvider =
-    AutoDisposeStreamProvider<List<Novel>>.internal(
+final getNovelsFromCacheProvider = AutoDisposeStreamProvider<Novel>.internal(
   getNovelsFromCache,
   name: r'getNovelsFromCacheProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -126,8 +125,106 @@ final getNovelsFromCacheProvider =
   allTransitiveDependencies: null,
 );
 
-typedef GetNovelsFromCacheRef = AutoDisposeStreamProviderRef<List<Novel>>;
-String _$novelShelfHash() => r'5fe2dde33b25c65c56ec9f0af8f83955e38d392a';
+typedef GetNovelsFromCacheRef = AutoDisposeStreamProviderRef<Novel>;
+String _$getChapterScheduleCachesHash() =>
+    r'938a2fcceaaacb5fb91e86bab620034a4b52a4a0';
+typedef GetChapterScheduleCachesRef
+    = AutoDisposeFutureProviderRef<List<ChapterScheduleCache?>>;
+
+///查询小说的阅读进度
+///
+/// Copied from [getChapterScheduleCaches].
+@ProviderFor(getChapterScheduleCaches)
+const getChapterScheduleCachesProvider = GetChapterScheduleCachesFamily();
+
+///查询小说的阅读进度
+///
+/// Copied from [getChapterScheduleCaches].
+class GetChapterScheduleCachesFamily
+    extends Family<AsyncValue<List<ChapterScheduleCache?>>> {
+  ///查询小说的阅读进度
+  ///
+  /// Copied from [getChapterScheduleCaches].
+  const GetChapterScheduleCachesFamily();
+
+  ///查询小说的阅读进度
+  ///
+  /// Copied from [getChapterScheduleCaches].
+  GetChapterScheduleCachesProvider call(
+    List<Novel> novels,
+  ) {
+    return GetChapterScheduleCachesProvider(
+      novels,
+    );
+  }
+
+  @override
+  GetChapterScheduleCachesProvider getProviderOverride(
+    covariant GetChapterScheduleCachesProvider provider,
+  ) {
+    return call(
+      provider.novels,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getChapterScheduleCachesProvider';
+}
+
+///查询小说的阅读进度
+///
+/// Copied from [getChapterScheduleCaches].
+class GetChapterScheduleCachesProvider
+    extends AutoDisposeFutureProvider<List<ChapterScheduleCache?>> {
+  ///查询小说的阅读进度
+  ///
+  /// Copied from [getChapterScheduleCaches].
+  GetChapterScheduleCachesProvider(
+    this.novels,
+  ) : super.internal(
+          (ref) => getChapterScheduleCaches(
+            ref,
+            novels,
+          ),
+          from: getChapterScheduleCachesProvider,
+          name: r'getChapterScheduleCachesProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getChapterScheduleCachesHash,
+          dependencies: GetChapterScheduleCachesFamily._dependencies,
+          allTransitiveDependencies:
+              GetChapterScheduleCachesFamily._allTransitiveDependencies,
+        );
+
+  final List<Novel> novels;
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetChapterScheduleCachesProvider && other.novels == novels;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, novels.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+String _$novelShelfHash() => r'd0802c15019f954f19a9b8380f357ca166007e71';
 
 /// See also [NovelShelf].
 @ProviderFor(NovelShelf)
@@ -142,5 +239,20 @@ final novelShelfProvider =
 );
 
 typedef _$NovelShelf = AutoDisposeNotifier<List<Novel>>;
+String _$schedulesHash() => r'f65e5d9a63d5febe799c25c0383a9569749ea080';
+
+/// See also [Schedules].
+@ProviderFor(Schedules)
+final schedulesProvider =
+    AutoDisposeNotifierProvider<Schedules, List<ChapterScheduleCache>>.internal(
+  Schedules.new,
+  name: r'schedulesProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$schedulesHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Schedules = AutoDisposeNotifier<List<ChapterScheduleCache>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member

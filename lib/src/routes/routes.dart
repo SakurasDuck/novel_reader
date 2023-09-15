@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
+import '../providers/chapter_reader.dart';
 import '../ui/pages/pages.dart';
 
 part 'routes.gr.dart';

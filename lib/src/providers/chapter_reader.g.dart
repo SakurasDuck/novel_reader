@@ -3,6 +3,26 @@
 part of 'chapter_reader.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$_ChapterScheduleCache _$$_ChapterScheduleCacheFromJson(
+        Map<String, dynamic> json) =>
+    _$_ChapterScheduleCache(
+      novelId: json['novelId'] as String,
+      chapterIndex: json['chapterIndex'] as int,
+      chapterSchedule: (json['chapterSchedule'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$$_ChapterScheduleCacheToJson(
+        _$_ChapterScheduleCache instance) =>
+    <String, dynamic>{
+      'novelId': instance.novelId,
+      'chapterIndex': instance.chapterIndex,
+      'chapterSchedule': instance.chapterSchedule,
+    };
+
+// **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
@@ -24,7 +44,8 @@ final getSliverObserverControllerProvider =
 
 typedef GetSliverObserverControllerRef
     = AutoDisposeProviderRef<SliverObserverController>;
-String _$chapterReaderHash() => r'bb50f58e21cd433171e25d64f6276588c993cfd7';
+String _$cacheCurrentChapterScheduleHash() =>
+    r'd0187755467c79092698340c4d0eef3efe01b030';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -47,14 +68,186 @@ class _SystemHash {
   }
 }
 
+typedef CacheCurrentChapterScheduleRef = AutoDisposeFutureProviderRef<void>;
+
+/// See also [cacheCurrentChapterSchedule].
+@ProviderFor(cacheCurrentChapterSchedule)
+const cacheCurrentChapterScheduleProvider = CacheCurrentChapterScheduleFamily();
+
+/// See also [cacheCurrentChapterSchedule].
+class CacheCurrentChapterScheduleFamily extends Family<AsyncValue<void>> {
+  /// See also [cacheCurrentChapterSchedule].
+  const CacheCurrentChapterScheduleFamily();
+
+  /// See also [cacheCurrentChapterSchedule].
+  CacheCurrentChapterScheduleProvider call(
+    ChapterScheduleCache schedule,
+  ) {
+    return CacheCurrentChapterScheduleProvider(
+      schedule,
+    );
+  }
+
+  @override
+  CacheCurrentChapterScheduleProvider getProviderOverride(
+    covariant CacheCurrentChapterScheduleProvider provider,
+  ) {
+    return call(
+      provider.schedule,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'cacheCurrentChapterScheduleProvider';
+}
+
+/// See also [cacheCurrentChapterSchedule].
+class CacheCurrentChapterScheduleProvider
+    extends AutoDisposeFutureProvider<void> {
+  /// See also [cacheCurrentChapterSchedule].
+  CacheCurrentChapterScheduleProvider(
+    this.schedule,
+  ) : super.internal(
+          (ref) => cacheCurrentChapterSchedule(
+            ref,
+            schedule,
+          ),
+          from: cacheCurrentChapterScheduleProvider,
+          name: r'cacheCurrentChapterScheduleProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$cacheCurrentChapterScheduleHash,
+          dependencies: CacheCurrentChapterScheduleFamily._dependencies,
+          allTransitiveDependencies:
+              CacheCurrentChapterScheduleFamily._allTransitiveDependencies,
+        );
+
+  final ChapterScheduleCache schedule;
+
+  @override
+  bool operator ==(Object other) {
+    return other is CacheCurrentChapterScheduleProvider &&
+        other.schedule == schedule;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, schedule.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+String _$getCurrentChapterScheduleHash() =>
+    r'0b1bbf0921d3bdcdf9fd500801795a9bec191bf3';
+typedef GetCurrentChapterScheduleRef
+    = AutoDisposeFutureProviderRef<ChapterScheduleCache?>;
+
+/// See also [getCurrentChapterSchedule].
+@ProviderFor(getCurrentChapterSchedule)
+const getCurrentChapterScheduleProvider = GetCurrentChapterScheduleFamily();
+
+/// See also [getCurrentChapterSchedule].
+class GetCurrentChapterScheduleFamily
+    extends Family<AsyncValue<ChapterScheduleCache?>> {
+  /// See also [getCurrentChapterSchedule].
+  const GetCurrentChapterScheduleFamily();
+
+  /// See also [getCurrentChapterSchedule].
+  GetCurrentChapterScheduleProvider call(
+    String novelId,
+  ) {
+    return GetCurrentChapterScheduleProvider(
+      novelId,
+    );
+  }
+
+  @override
+  GetCurrentChapterScheduleProvider getProviderOverride(
+    covariant GetCurrentChapterScheduleProvider provider,
+  ) {
+    return call(
+      provider.novelId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getCurrentChapterScheduleProvider';
+}
+
+/// See also [getCurrentChapterSchedule].
+class GetCurrentChapterScheduleProvider
+    extends AutoDisposeFutureProvider<ChapterScheduleCache?> {
+  /// See also [getCurrentChapterSchedule].
+  GetCurrentChapterScheduleProvider(
+    this.novelId,
+  ) : super.internal(
+          (ref) => getCurrentChapterSchedule(
+            ref,
+            novelId,
+          ),
+          from: getCurrentChapterScheduleProvider,
+          name: r'getCurrentChapterScheduleProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getCurrentChapterScheduleHash,
+          dependencies: GetCurrentChapterScheduleFamily._dependencies,
+          allTransitiveDependencies:
+              GetCurrentChapterScheduleFamily._allTransitiveDependencies,
+        );
+
+  final String novelId;
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetCurrentChapterScheduleProvider &&
+        other.novelId == novelId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, novelId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+String _$chapterReaderHash() => r'807b4cbfdba18e97da8fa64444ca8805732417e3';
+
 abstract class _$ChapterReader
     extends BuildlessAutoDisposeNotifier<ChapterReaderState> {
   late final Novel novel;
-  late final int cuttentIndex;
+  late final ChapterScheduleCache schedule;
 
   ChapterReaderState build(
     Novel novel,
-    int cuttentIndex,
+    ChapterScheduleCache schedule,
   );
 }
 
@@ -70,11 +263,11 @@ class ChapterReaderFamily extends Family<ChapterReaderState> {
   /// See also [ChapterReader].
   ChapterReaderProvider call(
     Novel novel,
-    int cuttentIndex,
+    ChapterScheduleCache schedule,
   ) {
     return ChapterReaderProvider(
       novel,
-      cuttentIndex,
+      schedule,
     );
   }
 
@@ -84,7 +277,7 @@ class ChapterReaderFamily extends Family<ChapterReaderState> {
   ) {
     return call(
       provider.novel,
-      provider.cuttentIndex,
+      provider.schedule,
     );
   }
 
@@ -109,11 +302,11 @@ class ChapterReaderProvider
   /// See also [ChapterReader].
   ChapterReaderProvider(
     this.novel,
-    this.cuttentIndex,
+    this.schedule,
   ) : super.internal(
           () => ChapterReader()
             ..novel = novel
-            ..cuttentIndex = cuttentIndex,
+            ..schedule = schedule,
           from: chapterReaderProvider,
           name: r'chapterReaderProvider',
           debugGetCreateSourceHash:
@@ -126,20 +319,20 @@ class ChapterReaderProvider
         );
 
   final Novel novel;
-  final int cuttentIndex;
+  final ChapterScheduleCache schedule;
 
   @override
   bool operator ==(Object other) {
     return other is ChapterReaderProvider &&
         other.novel == novel &&
-        other.cuttentIndex == cuttentIndex;
+        other.schedule == schedule;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, novel.hashCode);
-    hash = _SystemHash.combine(hash, cuttentIndex.hashCode);
+    hash = _SystemHash.combine(hash, schedule.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -150,7 +343,7 @@ class ChapterReaderProvider
   ) {
     return notifier.build(
       novel,
-      cuttentIndex,
+      schedule,
     );
   }
 }

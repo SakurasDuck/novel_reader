@@ -225,3 +225,182 @@ abstract class _ChapterReaderState implements ChapterReaderState {
   _$$_ChapterReaderStateCopyWith<_$_ChapterReaderState> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+ChapterScheduleCache _$ChapterScheduleCacheFromJson(Map<String, dynamic> json) {
+  return _ChapterScheduleCache.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ChapterScheduleCache {
+  String get novelId => throw _privateConstructorUsedError;
+  int get chapterIndex => throw _privateConstructorUsedError;
+  double get chapterSchedule => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ChapterScheduleCacheCopyWith<ChapterScheduleCache> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ChapterScheduleCacheCopyWith<$Res> {
+  factory $ChapterScheduleCacheCopyWith(ChapterScheduleCache value,
+          $Res Function(ChapterScheduleCache) then) =
+      _$ChapterScheduleCacheCopyWithImpl<$Res, ChapterScheduleCache>;
+  @useResult
+  $Res call({String novelId, int chapterIndex, double chapterSchedule});
+}
+
+/// @nodoc
+class _$ChapterScheduleCacheCopyWithImpl<$Res,
+        $Val extends ChapterScheduleCache>
+    implements $ChapterScheduleCacheCopyWith<$Res> {
+  _$ChapterScheduleCacheCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? novelId = null,
+    Object? chapterIndex = null,
+    Object? chapterSchedule = null,
+  }) {
+    return _then(_value.copyWith(
+      novelId: null == novelId
+          ? _value.novelId
+          : novelId // ignore: cast_nullable_to_non_nullable
+              as String,
+      chapterIndex: null == chapterIndex
+          ? _value.chapterIndex
+          : chapterIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      chapterSchedule: null == chapterSchedule
+          ? _value.chapterSchedule
+          : chapterSchedule // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_ChapterScheduleCacheCopyWith<$Res>
+    implements $ChapterScheduleCacheCopyWith<$Res> {
+  factory _$$_ChapterScheduleCacheCopyWith(_$_ChapterScheduleCache value,
+          $Res Function(_$_ChapterScheduleCache) then) =
+      __$$_ChapterScheduleCacheCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String novelId, int chapterIndex, double chapterSchedule});
+}
+
+/// @nodoc
+class __$$_ChapterScheduleCacheCopyWithImpl<$Res>
+    extends _$ChapterScheduleCacheCopyWithImpl<$Res, _$_ChapterScheduleCache>
+    implements _$$_ChapterScheduleCacheCopyWith<$Res> {
+  __$$_ChapterScheduleCacheCopyWithImpl(_$_ChapterScheduleCache _value,
+      $Res Function(_$_ChapterScheduleCache) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? novelId = null,
+    Object? chapterIndex = null,
+    Object? chapterSchedule = null,
+  }) {
+    return _then(_$_ChapterScheduleCache(
+      novelId: null == novelId
+          ? _value.novelId
+          : novelId // ignore: cast_nullable_to_non_nullable
+              as String,
+      chapterIndex: null == chapterIndex
+          ? _value.chapterIndex
+          : chapterIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      chapterSchedule: null == chapterSchedule
+          ? _value.chapterSchedule
+          : chapterSchedule // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_ChapterScheduleCache implements _ChapterScheduleCache {
+  const _$_ChapterScheduleCache(
+      {required this.novelId,
+      required this.chapterIndex,
+      required this.chapterSchedule});
+
+  factory _$_ChapterScheduleCache.fromJson(Map<String, dynamic> json) =>
+      _$$_ChapterScheduleCacheFromJson(json);
+
+  @override
+  final String novelId;
+  @override
+  final int chapterIndex;
+  @override
+  final double chapterSchedule;
+
+  @override
+  String toString() {
+    return 'ChapterScheduleCache(novelId: $novelId, chapterIndex: $chapterIndex, chapterSchedule: $chapterSchedule)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_ChapterScheduleCache &&
+            (identical(other.novelId, novelId) || other.novelId == novelId) &&
+            (identical(other.chapterIndex, chapterIndex) ||
+                other.chapterIndex == chapterIndex) &&
+            (identical(other.chapterSchedule, chapterSchedule) ||
+                other.chapterSchedule == chapterSchedule));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, novelId, chapterIndex, chapterSchedule);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ChapterScheduleCacheCopyWith<_$_ChapterScheduleCache> get copyWith =>
+      __$$_ChapterScheduleCacheCopyWithImpl<_$_ChapterScheduleCache>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ChapterScheduleCacheToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ChapterScheduleCache implements ChapterScheduleCache {
+  const factory _ChapterScheduleCache(
+      {required final String novelId,
+      required final int chapterIndex,
+      required final double chapterSchedule}) = _$_ChapterScheduleCache;
+
+  factory _ChapterScheduleCache.fromJson(Map<String, dynamic> json) =
+      _$_ChapterScheduleCache.fromJson;
+
+  @override
+  String get novelId;
+  @override
+  int get chapterIndex;
+  @override
+  double get chapterSchedule;
+  @override
+  @JsonKey(ignore: true)
+  _$$_ChapterScheduleCacheCopyWith<_$_ChapterScheduleCache> get copyWith =>
+      throw _privateConstructorUsedError;
+}

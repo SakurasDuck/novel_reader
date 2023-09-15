@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:novel_reader/src/models/models.dart';
 import 'package:novel_reader/src/services/file/io_reader.dart';
+import 'package:novel_reader/src/services/kv_store/kvstore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
@@ -21,7 +24,7 @@ class ChapterReader extends _$ChapterReader {
   @override
   ChapterReaderState build(
     Novel novel,
-    int cuttentIndex,
+    ChapterScheduleCache schedule,
   ) {
     final controller = ref.watch(getSliverObserverControllerProvider);
 
@@ -69,22 +72,25 @@ class ChapterReader extends _$ChapterReader {
           if (controller.controller!.position.maxScrollExtent <=
               controller.controller!.position.viewportDimension) {
             load(cuttentIndex + 1);
+          }else{
+            //加载完成,滚到上次阅读位置
+            controller.controller!.jumpTo(schedule.chapterSchedule);
           }
         });
       });
     }
 
-    load(cuttentIndex);
+    load(schedule.chapterIndex);
 
     //预先加载上一章(如果有的话)
-    if (cuttentIndex > 0) {
+    if (schedule.chapterIndex > 0) {
       SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-        readChapterContent(cuttentIndex - 1).then((value) {
+        readChapterContent(schedule.chapterIndex - 1).then((value) {
           if (value == null) {
             return;
           }
           state = state.copyWith(
-            minIndex: cuttentIndex - 1,
+            minIndex: schedule.chapterIndex - 1,
             previous: [value],
           );
         });
@@ -94,8 +100,8 @@ class ChapterReader extends _$ChapterReader {
     return ChapterReaderState(
         previous: [],
         nexts: [],
-        maxIndex: cuttentIndex,
-        minIndex: cuttentIndex,
+        maxIndex: schedule.chapterIndex,
+        minIndex: schedule.chapterIndex,
         controller: controller);
   }
 
@@ -154,10 +160,8 @@ class ReaderCurrentIndex extends _$ReaderCurrentIndex {
     return initIndex;
   }
 
-  
-  void changeIndex(int index){
-    state=index;
-    //记录当前阅读章节
+  void changeIndex(int index) {
+    state = index;
   }
 }
 
@@ -175,7 +179,49 @@ class ChapterReaderState with _$ChapterReaderState {
 @riverpod
 SliverObserverController getSliverObserverController(
     GetSliverObserverControllerRef ref) {
-  return SliverObserverController(controller: ScrollController());
+  return SliverObserverController(
+      controller: ScrollController(
+  ));
 }
 
+//当前阅读位置缓存
+// ignore: constant_identifier_names
+const _novel_chapter_cache_key = 'novel_chapter_cache_key';
 
+Lock? _lock;
+
+@freezed
+class ChapterScheduleCache with _$ChapterScheduleCache {
+  const factory ChapterScheduleCache(
+      {required String novelId,
+      required int chapterIndex,
+      required double chapterSchedule}) = _ChapterScheduleCache;
+
+  factory ChapterScheduleCache.fromJson(Map<String, dynamic> json) =>
+      _$ChapterScheduleCacheFromJson(json);
+}
+
+//当前章节阅读进度缓存key
+String getNovelChapterCacheKey(novelId) =>
+    '${_novel_chapter_cache_key}_$novelId';
+
+@riverpod
+Future<void> cacheCurrentChapterSchedule(CacheCurrentChapterScheduleRef ref,
+    ChapterScheduleCache schedule) async {
+  _lock ??= Lock();
+  await _lock!.mutex(() => kvStore.setString(
+      getNovelChapterCacheKey(schedule.novelId),
+      jsonEncode(schedule)));
+}
+
+@riverpod
+Future<ChapterScheduleCache?> getCurrentChapterSchedule(
+  GetCurrentChapterScheduleRef ref,
+  String novelId,
+) async {
+  final data = await kvStore.getString(getNovelChapterCacheKey(novelId));
+  if (data?.isNotEmpty == true) {
+    return ChapterScheduleCache.fromJson(jsonDecode(data!));
+  }
+  return null;
+}
